@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HouseHives - Smart Shared Household & Expense Management</title>
+  <meta name="description" content="HouseHives makes shared living effortless. Create virtual spaces, split bills automatically, scan receipts with AI, and simplify group debts instantly." />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Instrument+Serif:ital@1&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="navbar-header" id="navbar">
+    <div class="header-container">
+      <a href="#" class="brand-logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 8.5V15.5L12 22L22 15.5V8.5L12 2Z" fill="url(#logo-grad)" stroke="#ff4b6e" stroke-width="1.5"/>
+            <path d="M12 6L6 10V14L12 18L18 14V10L12 6Z" fill="#ffffff" opacity="0.9"/>
+            <defs>
+              <linearGradient id="logo-grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#ff7e79"/>
+                <stop offset="1" stop-color="#ff4b6e"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="logo-text">HouseHives</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#why" class="nav-pill-link active">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          Why HouseHives?
+        </a>
+        <a href="#features" class="nav-pill-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+          Features
+        </a>
+        <a href="#demo" class="nav-pill-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          Live Demos
+        </a>
+        <a href="#pricing" class="nav-pill-link">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="2" x2="12" y2="22"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          Pricing
+        </a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-btn" title="Notifications" id="btn-notifications">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <span class="notification-dot"></span>
+        </button>
+        <div class="lang-selector" id="lang-toggle" title="Switch Language">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          <span id="current-lang-text">EN</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <button class="btn-login" id="btn-login">Login</button>
+        <button class="btn-signup" id="btn-signup">Sign Up</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section with Continuous Falling Real Currency Rain Background Effect -->
+  <section class="hero-section" id="why">
+    <!-- 1. Full-screen backdrop container strictly at z-index: 0 (pointer-events: none, overflow: hidden) -->
+    <div class="hero-canvas-backdrop" aria-hidden="true">
+      <canvas id="cash-rain-canvas" class="cash-rain-canvas"></canvas>
+    </div>
+
+    <!-- 2. Readability Fade Overlay Sandwich Layer between canvas and UI (z-index: 1 & 2) -->
+    <div class="hero-rain-overlay"></div>
+    <div class="hero-pink-glow"></div>
+
+    <!-- Hero content container sits above canvas (relative, z-index: 10) -->
+    <div class="hero-center-container">
+      <!-- Main Heading with 3D Sparkle accents (Preserved Exactly) -->
+      <h1 class="hero-main-title">
+        <span class="sparkle-float-left">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+            <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" fill="url(#sparkle-grad-1)"/>
+            <defs>
+              <linearGradient id="sparkle-grad-1" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#ff9eb5"/>
+                <stop offset="1" stop-color="#ff4b6e"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </span>
+        Simplify Shared Living &<br />
+        Financial <span class="serif-glow-word">Harmony</span>
+        <span class="sparkle-float-right">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" fill="url(#sparkle-grad-2)"/>
+            <defs>
+              <linearGradient id="sparkle-grad-2" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#ff4b6e"/>
+                <stop offset="1" stop-color="#e11d48"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </span>
+      </h1>
+
+      <!-- Subtitle (Preserved Exactly) -->
+      <p class="hero-center-subtitle">
+        AI-powered household expense management that simplifies bill splitting and group savings without friction.
+      </p>
+
+      <!-- CTA Buttons (Preserved Exactly) -->
+      <div class="hero-center-ctas">
+        <button class="btn-hero-gradient" id="hero-get-started">
+          Start Saving Today
+        </button>
+        <button class="btn-hero-light" id="hero-try-ai">
+          Watch Demo
+        </button>
+      </div>
+
+      <!-- Dashboard Mockup (Half Visible Overflow matching 2nd Image) -->
+      <div class="hero-dashboard-overflow-frame">
+        <div class="app-dark-dashboard">
+          <!-- Sidebar -->
+          <div class="dash-sidebar">
+            <div class="dash-sidebar-brand">
+              <span class="dash-logo-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L2 8.5V15.5L12 22L22 15.5V8.5L12 2Z" fill="url(#dash-logo-grad)" stroke="#ff4b6e" stroke-width="1.5"/>
+                  <path d="M12 6L6 10V14L12 18L18 14V10L12 6Z" fill="#ffffff" opacity="0.9"/>
+                  <defs>
+                    <linearGradient id="dash-logo-grad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#ff7e79"/>
+                      <stop offset="1" stop-color="#ff4b6e"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </span>
+              <strong>HouseHives</strong>
+            </div>
+
+            <div class="dash-nav-menu">
+              <a href="#" class="dash-nav-item active">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span>Dashboard</span>
+              </a>
+              <a href="#" class="dash-nav-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span>Group Spaces</span>
+              </a>
+              <a href="#" class="dash-nav-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                <span>Household Bills</span>
+              </a>
+              <a href="#" class="dash-nav-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                <span>Settlements</span>
+              </a>
+              <a href="#" class="dash-nav-item">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                <span>Analytics</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Main Content Area -->
+          <div class="dash-main-area">
+            <!-- Header Bar -->
+            <div class="dash-top-bar">
+              <div>
+                <h3 class="dash-user-welcome">Welcome, Alex</h3>
+                <p class="dash-subheading">Here is your shared household & bill overview</p>
+              </div>
+
+              <div class="dash-top-actions">
+                <div class="dash-search-input">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                  <input type="text" placeholder="Search expenses, members..." readonly value="Search bills..." />
+                </div>
+                <div class="dash-profile-pill">
+                  <div class="dash-avatar">AR</div>
+                  <span>Alex Rivers</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Top Filter Pills -->
+            <div class="dash-filter-tabs">
+              <span class="filter-tab active">Overview</span>
+              <span class="filter-tab">Bills</span>
+              <span class="filter-tab">Roomies</span>
+            </div>
+
+            <!-- Grid Cards Layout -->
+            <div class="dash-cards-grid">
+              <!-- Card 1: Balance Card -->
+              <div class="dash-card balance-card">
+                <span class="card-label">Total Household Balance</span>
+                <div class="balance-price">$ 23.28</div>
+              </div>
+
+              <!-- Card 2: Recent Transactions Card (Center) -->
+              <div class="dash-card transactions-card">
+                <div class="trans-header">
+                  <strong>Recent House Expenses</strong>
+                  <div class="trans-pill-toggle">
+                    <span class="active">All</span>
+                    <span>Unsettled</span>
+                  </div>
+                </div>
+
+                <div class="trans-list">
+                  <div class="trans-item">
+                    <div class="trans-icon amazon">📦</div>
+                    <div class="trans-info">
+                      <strong>Amazon - Shared Utilities</strong>
+                      <span>Today, 2:45 PM • Split 4 members</span>
+                    </div>
+                    <div class="trans-amount-group">
+                      <strong class="trans-amount">$ 120.00</strong>
+                      <span class="trans-status status-paid">Paid</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 3: Metrics & Stats (Right) -->
+              <div class="dash-card stats-summary-card">
+                <div class="mini-stat-box">
+                  <span class="mini-label">Settlement Rate</span>
+                  <div class="mini-val">87%</div>
+                  <span class="mini-tag green">↑ 12% vs last month</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Showcase Section -->
+  <section class="showcase-section" id="features">
+    <div class="showcase-container">
+      
+      <div class="section-header-center">
+        <h2 class="section-title">Let Your HouseHives Do The Walking.</h2>
+        <p class="section-subtitle">
+          Manage your time on shared household bills and increase your living efficiency with smart automation, OCR bill reading, and debt simplification.
+        </p>
+      </div>
+
+      <!-- 3-Card Grid Matching Reference Image -->
+      <div class="feature-cards-grid">
+        
+        <!-- Card 1 -->
+        <div class="feature-card" id="card-scanner">
+          <div class="card-image-box">
+            <img src="/images/feature_scanner_3d.png" alt="Track Time AI Scanner 3D" class="card-3d-img" />
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <h3>AI Receipt Scanner</h3>
+            </div>
+            <p>
+              Upload electricity, internet or gas bills. OCR + LLM technology automatically extracts Total Amount, due date, and vendor details in seconds.
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="feature-card" id="card-settlement">
+          <div class="card-image-box">
+            <img src="/images/feature_settlement_3d.png" alt="Performance Smart Settlement 3D" class="card-3d-img" />
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <h3>Smart Settlement</h3>
+            </div>
+            <p>
+              Simplifies multi-person debt chains instantly. Ali owes Ahmad 500, Ahmad owes Fatima 500 → HouseHives redirects Ali to pay Fatima directly!
+            </p>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="feature-card" id="card-analytics">
+          <div class="card-image-box">
+            <img src="/images/feature_analytics_3d.png" alt="Reports Expense Analytics 3D" class="card-3d-img" />
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <h3>Expense Reports</h3>
+            </div>
+            <p>
+              Graphical monthly trends comparing utility and entertainment expenses against past months to help your house stay within budget.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Live Demos Section -->
+  <section class="interactive-demo-section" id="demo">
+    <div class="demo-container">
+      <div class="section-header-center">
+        <h2 class="section-title">Live Demo</h2>
+      </div>
+
+      <!-- Demo Tabs Bar -->
+      <div class="demo-tabs">
+        <button class="demo-tab-btn active" data-demo="scanner"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg> AI Scanner</button>
+        <button class="demo-tab-btn" data-demo="settlement"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><path d="M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01"></path></svg> Debt Settlement</button>
+        <button class="demo-tab-btn" data-demo="space"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg> Dashboard</button>
+        <button class="demo-tab-btn" data-demo="analytics"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg> Analytics</button>
+      </div>
+
+      <!-- Demo Panel 1: AI Receipt Scanner -->
+      <div class="demo-panel active" id="demo-scanner">
+        <div class="demo-card-grid">
+          <!-- Left: Receipt Upload / Selector -->
+          <div class="demo-box">
+            <h3>Sample Bill</h3>
+
+            <div class="dropzone" id="scanner-dropzone">
+              <div class="dropzone-content" id="dropzone-preview">
+                <div class="receipt-mock-paper">
+                  <div class="receipt-header">
+                    <span class="receipt-logo" id="receipt-vendor-logo"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> KElectric</span>
+                    <span class="receipt-tag">OFFICIAL BILL</span>
+                  </div>
+                  <div class="receipt-line"><span>Consumer:</span> <strong>Ghar Ka Mahol</strong></div>
+                  <div class="receipt-line"><span>No:</span> <strong id="receipt-no">98421049-01</strong></div>
+                  <div class="receipt-line highlight-line"><span>Total:</span> <strong id="receipt-amount-display">PKR 14,850</strong></div>
+                  <div class="receipt-line"><span>Due:</span> <strong id="receipt-date-display">18-Oct-2026</strong></div>
+                  <div class="receipt-barcode">|||||||| ||| |||||| |||||||||||</div>
+                </div>
+              </div>
+              <div class="scanner-laser" id="scanner-laser"></div>
+            </div>
+
+            <button class="btn-primary-action" id="btn-run-ocr">
+              <span class="spinner" id="ocr-spinner" style="display:none;"></span>
+              <span id="ocr-btn-text"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> Scan Bill</span>
+            </button>
+          </div>
+
+          <!-- Right: Auto-filled Form by AI -->
+          <div class="demo-box highlight-box">
+            <h3>AI Output</h3>
+            <p class="demo-hint">Auto-extracted by AI</p>
+            
+            <form class="ai-form" id="ai-extracted-form">
+              <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="ai-input-title" value="KElectric Bill" readonly />
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Amount</label>
+                  <input type="text" id="ai-input-amount" value="14,850" readonly />
+                </div>
+                <div class="form-group">
+                  <label>Due Date</label>
+                  <input type="text" id="ai-input-date" value="2026-10-18" readonly />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Category</label>
+                  <input type="text" id="ai-input-category" value="Utilities" class="category-badge-input" readonly />
+                </div>
+                <div class="form-group">
+                  <label>Split</label>
+                  <input type="text" id="ai-input-split" value="4 Members (PKR 3,712/ea)" readonly />
+                </div>
+              </div>
+              <button type="button" class="btn-success-action" id="btn-save-bill">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Post Bill
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demo Panel 2: Smart Debt Simplification -->
+      <div class="demo-panel" id="demo-settlement">
+        <div class="demo-card-grid">
+          <div class="demo-box">
+            <h3>Raw Debts</h3>
+            <p class="demo-hint">6 bank transfers needed</p>
+            
+            <div class="debt-list" id="raw-debt-list">
+              <div class="debt-item">
+                <span class="debt-person">Ali</span> owes <span class="debt-person">Ahmad</span> <strong>PKR 1,500</strong>
+              </div>
+              <div class="debt-item">
+                <span class="debt-person">Ahmad</span> owes <span class="debt-person">Fatima</span> <strong>PKR 1,500</strong>
+              </div>
+              <div class="debt-item">
+                <span class="debt-person">Fatima</span> owes <span class="debt-person">Sara</span> <strong>PKR 1,000</strong>
+              </div>
+              <div class="debt-item">
+                <span class="debt-person">Sara</span> owes <span class="debt-person">Ali</span> <strong>PKR 500</strong>
+              </div>
+            </div>
+
+            <button class="btn-primary-action" id="btn-simplify-debts">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 4V2M15 16v-2M8 9h2M20 9h-2M17.8 5.2l-1.4 1.4M12.2 10.8l-1.4 1.4M17.8 12.8l-1.4-1.4M12.2 7.2l-1.4-1.4"></path></svg> Simplify Debts
+            </button>
+          </div>
+
+          <div class="demo-box highlight-box">
+            <h3>Simplified Result</h3>
+            <p class="demo-hint">Just 2 direct transfers</p>
+
+            <div class="simplified-result-box" id="simplified-result">
+              <div class="direct-transfer-card">
+                <div class="transfer-from-to">
+                  <span class="user-avatar avatar-ali">Ali</span>
+                  <span class="arrow-path">➔ PKR 1,000 ➔</span>
+                  <span class="user-avatar avatar-fatima">Fatima</span>
+                </div>
+                <div class="transfer-meta">Direct transfer</div>
+              </div>
+
+              <div class="direct-transfer-card">
+                <div class="transfer-from-to">
+                  <span class="user-avatar avatar-ahmad">Ahmad</span>
+                  <span class="arrow-path">➔ PKR 500 ➔</span>
+                  <span class="user-avatar avatar-sara">Sara</span>
+                </div>
+                <div class="transfer-meta">Direct transfer</div>
+              </div>
+            </div>
+
+            <div class="saving-stat-banner">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> <strong>66% fewer transfers!</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demo Panel 3: Virtual Space & Live Dashboard -->
+      <div class="demo-panel" id="demo-space">
+        <div class="dashboard-mockup">
+          <div class="dash-header">
+            <div class="dash-space-info">
+              <span class="dash-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></span>
+              <div>
+                <h3 id="dash-space-name">Ghar Ka Mahol</h3>
+                <span class="dash-subtext">Code: <strong>HIVE-7892-PK</strong></span>
+              </div>
+            </div>
+            <button class="btn-sm-action" id="btn-invite-copy"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy Code</button>
+          </div>
+
+          <div class="dash-stats-row">
+            <div class="dash-stat-card">
+              <span>Total Bills</span>
+              <strong id="dash-total-bills">PKR 38,400</strong>
+            </div>
+            <div class="dash-stat-card">
+              <span>Your Share</span>
+              <strong id="dash-user-share">PKR 9,600</strong>
+            </div>
+            <div class="dash-stat-card">
+              <span>Pending</span>
+              <strong class="text-warning" id="dash-pending">PKR 3,712</strong>
+            </div>
+            <div class="dash-stat-card">
+              <span>Status</span>
+              <span class="badge-status-active">Active</span>
+            </div>
+          </div>
+
+          <div class="dash-members-section">
+            <h4>House Members</h4>
+            <div class="members-table">
+              <div class="table-header">
+                <span>Member</span>
+                <span>Role</span>
+                <span>Owed</span>
+                <span>Status</span>
+                <span>Action</span>
+              </div>
+              <div class="table-row">
+                <span class="member-name"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Ali (You)</span>
+                <span>Admin</span>
+                <span class="amount-pending">PKR 3,712</span>
+                <span><span class="status-pill status-unpaid">Pending</span></span>
+                <span><button class="btn-table-action" onclick="markMemberPaid('Ali')">Mark Paid</button></span>
+              </div>
+              <div class="table-row">
+                <span class="member-name"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Ahmad</span>
+                <span>Member</span>
+                <span class="amount-settled">PKR 0</span>
+                <span><span class="status-pill status-paid">Paid</span></span>
+                <span><button class="btn-table-disabled" disabled>Settled</button></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Demo Panel 4: Expense Analytics -->
+      <div class="demo-panel" id="demo-analytics">
+        <div class="analytics-grid">
+          <div class="chart-card">
+            <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg> Monthly Trend</h3>
+            <p class="chart-subtitle">Past 3 months comparison</p>
+            <div class="chart-container">
+              <canvas id="monthlyTrendChart"></canvas>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg> Category Split</h3>
+            <p class="chart-subtitle">Utilities & Groceries</p>
+            <div class="chart-container">
+              <canvas id="categoryDonutChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Plans Section -->
+  <section class="pricing-section" id="pricing">
+    <div class="pricing-container">
+      <div class="section-header-center">
+        <h2 class="section-title">Simple, Transparent Pricing For Every Household</h2>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Free Plan -->
+        <div class="pricing-card">
+          <div class="plan-name">Free Hive</div>
+          <div class="plan-price">PKR 0 <span>/month</span></div>
+          <p class="plan-desc">Great for small apartments & up to 4 housemates.</p>
+          <ul class="plan-features">
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4b6e" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg> Up to 4 Members in 1 Virtual Space</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4b6e" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg> Manual Expense Entry & Split</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4b6e" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg> Dashboard Balance Overview</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4b6e" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg> 5 AI Receipt Scans / Month</li>
+          </ul>
+          <button class="btn-plan-outline">Get Started Free</button>
+        </div>
+
+        <!-- Pro Plan -->
+        <div class="pricing-card plan-featured">
+          <div class="featured-tag">MOST POPULAR</div>
+          <div class="plan-name">Pro Hive</div>
+          <div class="plan-price">PKR 499 <span>/month</span></div>
+          <p class="plan-desc">For active shared homes needing AI OCR & unlimited OCR.</p>
+          <ul class="plan-features">
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4b6e" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg> Unlimited Virtual Space Members</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4b6e" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg> Unlimited AI OCR Receipt Scanning</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4b6e" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg> Smart Debt Simplification Algorithm</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4b6e" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg> SMS & Email Payment Reminders</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4b6e" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg> Advanced Monthly Analytics & Trends</li>
+          </ul>
+          <button class="btn-plan-solid">Start 14-Day Free Trial</button>
+        </div>
+
+        <!-- Hostel/Enterprise Plan -->
+        <div class="pricing-card">
+          <div class="plan-name">Hostel / PG Hive</div>
+          <div class="plan-price">PKR 1,499 <span>/month</span></div>
+          <p class="plan-desc">For commercial hostels, PG accommodations & multi-flat managers.</p>
+          <ul class="plan-features">
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4b6e" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg> Multi-House Space Management</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4b6e" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg> Bulk Automated Reminders & WhatsApp Alerts</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4b6e" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg> Export PDF & Excel Expense Reports</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4b6e" stroke-width="2.8"><polyline points="20 6 9 17 4 12"></polyline></svg> Dedicated Support & Custom Roles</li>
+          </ul>
+          <button class="btn-plan-outline">Contact Sales</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Brand Logos Bar below Pricing Section -->
+  <div class="trust-brands-section">
+    <p class="trust-label">Trusted by roommates & shared spaces at companies worldwide</p>
+    <div class="marquee-container">
+      <div class="marquee-track">
+        <div class="brands-row">
+          <div class="brand-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg> <span>airbnb</span></div>
+          <div class="brand-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v16H4z"/></svg> <span>Fivetran</span></div>
+          <div class="brand-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 22h20z"/></svg> <span>pendo</span></div>
+          <div class="brand-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4L4 12l8 8 8-8z"/></svg> <span>Airtable</span></div>
+          <div class="brand-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3h14v4H5zm0 7h14v4H5zm0 7h14v4H5z"/></svg> <span>Framer</span></div>
+          <div class="brand-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/></svg> <span>pipedrive</span></div>
+        </div>
+        <!-- Duplicate set for seamless looping marquee -->
+        <div class="brands-row" aria-hidden="true">
+          <div class="brand-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg> <span>airbnb</span></div>
+          <div class="brand-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v16H4z"/></svg> <span>Fivetran</span></div>
+          <div class="brand-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 22h20z"/></svg> <span>pendo</span></div>
+          <div class="brand-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4L4 12l8 8 8-8z"/></svg> <span>Airtable</span></div>
+          <div class="brand-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M5 3h14v4H5zm0 7h14v4H5zm0 7h14v4H5z"/></svg> <span>Framer</span></div>
+          <div class="brand-item"><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/></svg> <span>pipedrive</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom CTA & Footer Section (Matching Reference Image) -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      
+      <!-- CTA Banner -->
+      <div class="footer-cta-banner">
+        <div class="cta-left">
+          <h3>Ready to get started?</h3>
+          <p>Join thousands of happy roommates managing shared bills effortless with HouseHives.</p>
+        </div>
+        <div class="cta-right">
+          <button class="btn-download-cta" id="btn-download-app">
+            Download App
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Links Grid -->
+      <div class="footer-links-grid">
+        <div class="footer-brand-col">
+          <div class="brand-logo">
+            <div class="logo-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 8.5V15.5L12 22L22 15.5V8.5L12 2Z" fill="#ff4b6e"/>
+              </svg>
+            </div>
+            <span class="logo-text">HouseHives</span>
+          </div>
+          <p class="footer-brand-tagline">Smart shared living, effortless bill splits, and AI debt simplification.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Services</h4>
+          <a href="#">Virtual Space Creation</a>
+          <a href="#">AI Receipt Scanner</a>
+          <a href="#">Smart Debt Settlement</a>
+          <a href="#">Payment Reminders</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>About</h4>
+          <a href="#">Our Story</a>
+          <a href="#">Benefits</a>
+          <a href="#">Team</a>
+          <a href="#">Careers</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Help</h4>
+          <a href="#">FAQs</a>
+          <a href="#">Contact Support</a>
+          <a href="#">Community Guidelines</a>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-bottom-bar">
+        <div class="legal-links">
+          <a href="#">Terms & Conditions</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H7.5v-3H10V9.5C10 7.01 11.49 5.65 13.75 5.65c1.08 0 2.21.19 2.21.19v2.43h-1.25c-1.23 0-1.61.77-1.61 1.56V12h2.74l-.44 3h-2.3v6.8c4.56-.93 8-4.96 8-9.8z"/></svg></a>
+          <a href="#" aria-label="Twitter"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg></a>
+          <a href="#" aria-label="Instagram"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
