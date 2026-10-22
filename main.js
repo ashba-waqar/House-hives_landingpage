@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAnalyticsCharts();
   initLanguageToggle();
   initQuickScrollButtons();
+  initAuthModal();
 });
 
 // Navbar Elevation on Scroll
@@ -825,4 +826,163 @@ function initCashRain() {
     img.src = src;
   });
 }
+
+// Interactive Auth Modal Controller (Matching Screenshots 1 & 2)
+function initAuthModal() {
+  const modalBackdrop = document.getElementById('auth-modal-backdrop');
+  const cardWrapper = document.getElementById('auth-modal-card-wrapper');
+  const btnClose = document.getElementById('btn-close-auth-modal');
+  const btnLogin = document.getElementById('btn-login');
+  const btnSignup = document.getElementById('btn-signup');
+  const btnToggleAuthMode = document.getElementById('modal-btn-toggle-auth-mode');
+  const groupSignupName = document.getElementById('modal-group-signup-name');
+  const authMetaRow = document.getElementById('modal-auth-meta-row');
+  const authDemoSection = document.getElementById('modal-auth-demo-section');
+  const authBtnText = document.getElementById('modal-auth-btn-text');
+  const authSubtitle = document.getElementById('modal-auth-subtitle');
+  const authToggleMsg = document.getElementById('modal-auth-toggle-msg');
+  const btnToggleEye = document.getElementById('modal-btn-toggle-eye');
+  const inputPassword = document.getElementById('modal-auth-password');
+  const inputEmail = document.getElementById('modal-auth-email');
+  const inputName = document.getElementById('modal-auth-name');
+  const authForm = document.getElementById('landing-auth-form');
+  const authAlert = document.getElementById('modal-auth-alert');
+
+  let isSignUpMode = false;
+
+  function setAuthMode(signUp) {
+    isSignUpMode = Boolean(signUp);
+    if (authAlert) authAlert.style.display = 'none';
+
+    if (isSignUpMode) {
+      // First Image view: "Register your profile to start splitting expenses"
+      if (groupSignupName) groupSignupName.style.display = 'block';
+      if (authMetaRow) authMetaRow.style.display = 'none';
+      if (authDemoSection) authDemoSection.style.display = 'none';
+      if (authBtnText) authBtnText.textContent = 'Create Account';
+      if (authSubtitle) authSubtitle.textContent = 'Register your profile to start splitting expenses';
+      if (authToggleMsg) authToggleMsg.textContent = 'Already have an account?';
+      if (btnToggleAuthMode) btnToggleAuthMode.textContent = 'Sign in';
+      if (inputName) inputName.required = true;
+    } else {
+      // Second Image view: "Split bills & subscriptions seamlessly"
+      if (groupSignupName) groupSignupName.style.display = 'none';
+      if (authMetaRow) authMetaRow.style.display = 'flex';
+      if (authDemoSection) authDemoSection.style.display = 'block';
+      if (authBtnText) authBtnText.textContent = 'Sign In';
+      if (authSubtitle) authSubtitle.textContent = 'Split bills & subscriptions seamlessly';
+      if (authToggleMsg) authToggleMsg.textContent = "Don't have an account?";
+      if (btnToggleAuthMode) btnToggleAuthMode.textContent = 'Sign up';
+      if (inputName) inputName.required = false;
+    }
+  }
+
+  function openAuthModal(mode = 'signin') {
+    setAuthMode(mode === 'signup');
+    if (modalBackdrop) {
+      modalBackdrop.style.display = 'flex';
+      requestAnimationFrame(() => {
+        modalBackdrop.classList.add('open');
+      });
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeAuthModal() {
+    if (modalBackdrop) {
+      modalBackdrop.classList.remove('open');
+      setTimeout(() => {
+        modalBackdrop.style.display = 'none';
+        document.body.style.overflow = '';
+      }, 250);
+    }
+  }
+
+  // Trigger from Header Navbar Buttons
+  if (btnLogin) {
+    btnLogin.addEventListener('click', (e) => {
+      e.preventDefault();
+      openAuthModal('signin'); // Opens 2nd image view
+    });
+  }
+
+  if (btnSignup) {
+    btnSignup.addEventListener('click', (e) => {
+      e.preventDefault();
+      openAuthModal('signup'); // Opens 1st image view
+    });
+  }
+
+  // Close handlers
+  btnClose?.addEventListener('click', closeAuthModal);
+  modalBackdrop?.addEventListener('click', (e) => {
+    if (e.target === modalBackdrop || e.target.classList.contains('auth-viewport-modal')) {
+      closeAuthModal();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modalBackdrop?.classList.contains('open')) {
+      closeAuthModal();
+    }
+  });
+
+  // Toggle between Sign In and Sign Up within the modal
+  btnToggleAuthMode?.addEventListener('click', () => {
+    setAuthMode(!isSignUpMode);
+  });
+
+  // Password visibility toggle
+  btnToggleEye?.addEventListener('click', () => {
+    if (!inputPassword) return;
+    inputPassword.type = inputPassword.type === 'password' ? 'text' : 'password';
+  });
+
+  // 1-Click Demo Profiles -> auto fill & open live app
+  document.querySelectorAll('#modal-auth-demo-section .auth-demo-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const email = btn.getAttribute('data-demo-email');
+      if (inputEmail && email) inputEmail.value = email;
+      if (inputPassword) inputPassword.value = 'password123';
+      
+      // Redirect to live web app
+      window.open('https://househives.onrender.com', '_blank');
+      closeAuthModal();
+    });
+  });
+
+  // Form submission -> Redirect to live app with target mode
+  authForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const modeParam = isSignUpMode ? 'signup' : 'signin';
+    window.open(`https://househives.onrender.com?mode=${modeParam}#${modeParam}`, '_blank');
+    closeAuthModal();
+  });
+
+  // 3D Tilt effect
+  if (modalBackdrop && cardWrapper) {
+    modalBackdrop.addEventListener('mousemove', (e) => {
+      const rect = cardWrapper.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const rotX = (y / 25) * -1;
+      const rotY = (x / 25);
+      cardWrapper.style.transform = `rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg)`;
+    });
+    modalBackdrop.addEventListener('mouseleave', () => {
+      cardWrapper.style.transform = `rotateX(0deg) rotateY(0deg)`;
+    });
+  }
+
+  // Check URL hash/query on initial page load
+  const urlParams = new URLSearchParams(window.location.search);
+  const hash = (window.location.hash || '').toLowerCase();
+  const mode = (urlParams.get('mode') || '').toLowerCase();
+  if (mode === 'signup' || hash === '#signup') {
+    openAuthModal('signup');
+  } else if (mode === 'signin' || mode === 'login' || hash === '#login' || hash === '#signin') {
+    openAuthModal('signin');
+  }
+}
+
 
